@@ -1,1 +1,99 @@
 # terraform-gcp-template
+[Terraform](https://www.terraform.io/) template for GCP
+
+## Features
+* Run `terraform apply` (only master branch)
+* Run `terraform plan` (except master branch)
+* Comment the result of Terraform to PullRequest using [tfnotify](https://github.com/mercari/tfnotify)
+
+## Requirements
+* GitHub Actions
+* Terraform v0.14+
+
+## Usage of this template
+### 1. Create a repository using this template
+### 2. Create a service account for Terraform
+https://console.cloud.google.com/iam-admin/serviceaccounts
+
+The minimum required IAM roles are followings
+
+* Storage Admin
+
+Finally, download the key file with json and store as `credential.json`
+
+### 3. Register secrets
+* `SERVICE_ACCOUNT_KEY` **(required)**
+  * Input content of Service account key file
+* `SLACK_WEBHOOK` (optional)
+  * Create from https://slack.com/apps/A0F7XDUAZ
+
+### 4. Edit files
+#### [.github/workflows/terraform.yml](.github/workflows/terraform.yml)
+Edit followings
+
+* `TERRAFORM_VERSION`
+* `TFNOTIFY_VERSION`
+
+#### [.terraform-version](.terraform-version)
+* Upgrade to the latest version if necessary
+* Same to `TERRAFORM_VERSION` of [.github/workflows/terraform.yml](.github/workflows/terraform.yml)
+
+#### [account.tf](account.tf)
+Edit followings
+
+* `gcp_project_id`
+* `provider_region`
+* `backend_bucket_location`
+
+#### [backend.tf](backend.tf)
+Edit followings
+
+* `terraform.backend.bucket`
+  * Same to `backend_bucket_name` of [account.tf](account.tf)
+
+#### [tfnotify.yml](tfnotify.yml)
+Edit followings
+
+* `notifier.github.repository.owner`
+* `notifier.github.repository.name`
+
+#### [versions.tf](versions.tf)
+Upgrade to the latest version if necessary
+
+* `terraform.required_providers.google.version`
+* `terraform.required_providers.google-beta.version`
+* `terraform.required_version`
+
+### 5. Create GCS bucket for Terraform backend
+https://console.cloud.google.com/storage/browser
+
+* Same to `backend_bucket_name` and `backend_bucket_location` of [account.tf](account.tf)
+
+### 6. Install tools
+* [direnv](https://github.com/direnv/direnv)
+* [tfenv](https://github.com/tfutils/tfenv)
+
+### 7. Run Terraform from local
+```bash
+cp .envrc.example .envrc
+vi .envrc
+
+direnv allow
+tfenv install
+
+terraform init -upgrade
+git add .terraform.lock.hcl
+git commit -m "terraform init -upgrade"
+
+terraform import google_storage_bucket.backend __BACKEND_BUCKET_NAME__
+
+terraform plan -lock=false
+terraform apply -lock=false
+
+terraform plan
+terraform apply
+
+git push
+```
+
+### 8. Check if GitHub Actions build is executed

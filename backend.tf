@@ -1,7 +1,7 @@
 terraform {
   backend "gcs" {
     # NOTE: variables(var and local) are not allowed here
-    bucket = "YOUR_GCP_PROJECT_ID-terraform"
+    bucket = "YOUR_GCP_PROJECT_ID-terraform"  # TODO: edit here
 
     prefix = "terraform/state"
   }
