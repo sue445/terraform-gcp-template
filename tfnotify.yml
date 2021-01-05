@@ -4,8 +4,8 @@ notifier:
   github:
     token: $GITHUB_TOKEN
     repository:
-      owner: "REPO_OWNER"
-      name: "REPO_NAME"
+      owner: "REPO_OWNER" # TODO: edit here
+      name: "REPO_NAME" # TODO: edit here
 terraform:
   fmt:
     template: |
