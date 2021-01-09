@@ -80,7 +80,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
 
-      - name: terraform apply (master only)
+      - name: terraform apply (master push, manual running)
         run: |
           terraform apply -input=false -auto-approve | tfnotify apply
         env:
