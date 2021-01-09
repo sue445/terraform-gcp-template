@@ -20,6 +20,7 @@ on:
       - reopened
     paths-ignore:
       - "**.md"
+  workflow_dispatch:
 
 jobs:
   terraform:
@@ -84,7 +85,7 @@ jobs:
           terraform apply -input=false -auto-approve | tfnotify apply
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch'
 
       - name: Slack Notification
         uses: lazy-actions/slatify@master
