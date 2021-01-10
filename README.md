@@ -2,7 +2,7 @@
 [Terraform](https://www.terraform.io/) template for GCP
 
 ## Features
-* Run `terraform apply` (push to master branch or [manual running](https://docs.github.com/en/free-pro-team@latest/actions/managing-workflow-runs/manually-running-a-workflow))
+* Run `terraform apply` (push to master branch or [manually running](https://docs.github.com/en/free-pro-team@latest/actions/managing-workflow-runs/manually-running-a-workflow))
 * Run `terraform plan` (except master branch)
 * Comment the result of Terraform to PullRequest using [tfnotify](https://github.com/mercari/tfnotify)
 
