@@ -27,7 +27,14 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      # Used in provider
+      # c.f.
+      # * https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#full-reference
+      # * https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/guides/provider_reference#full-reference
       GOOGLE_CLOUD_KEYFILE_JSON:  /tmp/service_account.json
+
+      # Used in gcs backend
+      # c.f. https://www.terraform.io/docs/backends/types/gcs.html#configuration-variables
       GOOGLE_BACKEND_CREDENTIALS: /tmp/service_account.json
 
     steps:
