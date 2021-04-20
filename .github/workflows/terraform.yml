@@ -26,6 +26,8 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 
+    concurrency: terraform-tfstate
+
     env:
       # Used in provider
       # c.f.
