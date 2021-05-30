@@ -10,7 +10,7 @@ env:
 on:
   push:
     branches:
-      - master
+      - main
     paths-ignore:
       - "**.md"
   pull_request:
@@ -89,12 +89,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
 
-      - name: terraform apply (master push, manually running)
+      - name: terraform apply (main push, manually running)
         run: |
           terraform apply -input=false -auto-approve | tfnotify apply
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch'
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
 
       - name: Slack Notification
         uses: lazy-actions/slatify@master
