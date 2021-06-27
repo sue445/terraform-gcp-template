@@ -5,6 +5,7 @@
 * Run `terraform apply` (push to main branch or [manually running](https://docs.github.com/en/free-pro-team@latest/actions/managing-workflow-runs/manually-running-a-workflow))
 * Run `terraform plan` (except main branch)
 * Comment the result of Terraform to PullRequest using [tfnotify](https://github.com/mercari/tfnotify)
+* Run [`tflint`](https://github.com/terraform-linters/tflint)
 * Slack notification
 
 ## Requirements
