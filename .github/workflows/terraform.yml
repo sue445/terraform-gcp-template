@@ -77,6 +77,11 @@ jobs:
           fi
           exit $ret
 
+      - name: tflint
+        uses: reviewdog/action-tflint@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: terraform plan
         run: |
           # NOTE: tfnotify uses GITHUB_SHA, but GITHUB_SHA can't be override in env
