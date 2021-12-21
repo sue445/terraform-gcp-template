@@ -1,2 +1,1 @@
-export GOOGLE_CLOUD_KEYFILE_JSON=credential.json
-export GOOGLE_BACKEND_CREDENTIALS=credential.json
+export GOOGLE_CREDENTIALS=credential.json
