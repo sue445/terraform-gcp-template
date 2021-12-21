@@ -24,7 +24,7 @@ The minimum required IAM roles are followings
 Finally, download the key file with json and store as `credential.json`
 
 ### 3. Register secrets
-* `SERVICE_ACCOUNT_KEY` **(required)**
+* `GOOGLE_CREDENTIALS` **(required)**
   * Input content of Service account key file
 * `SLACK_WEBHOOK` (optional)
   * Create from https://slack.com/apps/A0F7XDUAZ
