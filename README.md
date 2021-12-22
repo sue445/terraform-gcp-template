@@ -4,7 +4,7 @@
 ## Features
 * Run `terraform apply` (push to main branch or [manually running](https://docs.github.com/en/free-pro-team@latest/actions/managing-workflow-runs/manually-running-a-workflow))
 * Run `terraform plan` (except main branch)
-* Comment the result of Terraform to PullRequest using [tfnotify](https://github.com/mercari/tfnotify)
+* Comment the result of Terraform to PullRequest
 * Run [`tflint`](https://github.com/terraform-linters/tflint)
 * Slack notification
 
@@ -34,7 +34,6 @@ Finally, download the key file with json and store as `credential.json`
 Edit followings
 
 * `TERRAFORM_VERSION`
-* `TFNOTIFY_VERSION`
 
 #### [.terraform-version](.terraform-version)
 * Upgrade to the latest version if necessary
@@ -52,12 +51,6 @@ Edit followings
 
 * `terraform.backend.bucket`
   * Same to `backend_bucket_name` of [account.tf](account.tf)
-
-#### [tfnotify.yml](tfnotify.yml)
-Edit followings
-
-* `notifier.github.repository.owner`
-* `notifier.github.repository.name`
 
 #### [versions.tf](versions.tf)
 Upgrade to the latest version if necessary
