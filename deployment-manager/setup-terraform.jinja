@@ -36,6 +36,13 @@ resources:
       member: serviceAccount:$(ref.terraform.email)
       role: roles/iam.workloadIdentityPoolAdmin
 
+  - name: terraform-iam-binding-iam.serviceAccountAdmin
+    type: gcp-types/cloudresourcemanager-v1:virtual.projects.iamMemberBinding
+    properties:
+      resource: {{ env['project'] }}
+      member: serviceAccount:$(ref.terraform.email)
+      role: roles/iam.serviceAccountAdmin
+
   - name: {{ properties["backendBucketName"] }}
     type: storage.v1.bucket
     properties:
