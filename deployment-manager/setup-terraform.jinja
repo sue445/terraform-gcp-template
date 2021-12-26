@@ -1,0 +1,45 @@
+resources:
+  - name: enable-iamcredentials.googleapis.com
+    type: deploymentmanager.v2.virtual.enableService
+    properties:
+      consumerId: "project:{{ env['project'] }}"
+      serviceName: iamcredentials.googleapis.com
+
+  - name: enable-iam.googleapis.com
+    type: deploymentmanager.v2.virtual.enableService
+    properties:
+      consumerId: "project:{{ env['project'] }}"
+      serviceName: iam.googleapis.com
+
+  - name: enable-storage.googleapis.com
+    type: deploymentmanager.v2.virtual.enableService
+    properties:
+      consumerId: "project:{{ env['project'] }}"
+      serviceName: storage.googleapis.com
+
+  - name: terraform
+    type: iam.v1.serviceAccount
+    properties:
+      accountId: terraform
+
+  - name: terraform-iam-binding-storage.admin
+    type: gcp-types/cloudresourcemanager-v1:virtual.projects.iamMemberBinding
+    properties:
+      resource: {{ env['project'] }}
+      member: serviceAccount:$(ref.terraform.email)
+      role: roles/storage.admin
+
+  - name: terraform-iam-binding-iam.workloadIdentityPoolAdmin
+    type: gcp-types/cloudresourcemanager-v1:virtual.projects.iamMemberBinding
+    properties:
+      resource: {{ env['project'] }}
+      member: serviceAccount:$(ref.terraform.email)
+      role: roles/iam.workloadIdentityPoolAdmin
+
+  - name: {{ properties["backendBucketName"] }}
+    type: storage.v1.bucket
+    properties:
+      name: {{ properties["backendBucketName"] }}
+      location: {{ properties["backendBucketLocation"] }}
+      versioning:
+        enabled: true

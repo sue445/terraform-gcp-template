@@ -1,0 +1,16 @@
+properties:
+  backendBucketName:
+    type: string
+    description: |
+      Bucket name used as the backend of Terraform
+      c.f. https://www.terraform.io/language/settings/backends/gcs
+
+  backendBucketLocation:
+    type: string
+    description: |
+      Location of backend bucket (e.g. us, us-central1)
+      c.f. https://cloud.google.com/storage/docs/locations
+    default: us
+
+required:
+  - backendBucketName
