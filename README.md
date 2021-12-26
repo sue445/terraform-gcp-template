@@ -1,56 +1,88 @@
 # terraform-gcp-template
 [Terraform](https://www.terraform.io/) template for GCP
 
-## Features
-* Run `terraform apply` (push to main branch or [manually running](https://docs.github.com/en/free-pro-team@latest/actions/managing-workflow-runs/manually-running-a-workflow))
-* Run `terraform plan` (except main branch)
-* Comment the result of Terraform to PullRequest
-* Run [`tflint`](https://github.com/terraform-linters/tflint)
+## [Workflow](.github/workflows/terraform.yml) features
+* Authenticating via [Workload Identity Federation](https://cloud.google.com/iam/docs/configuring-workload-identity-federation#github-actions)
+* Run `terraform apply`
+  * Automatically running on `main` branch
+  * Manual running on any branch
+* Run `terraform plan`, `terraform fmt` and [tflint](https://github.com/terraform-linters/tflint)
+* Comment the result of `terraform plan` to PullRequest
 * Slack notification
 
 ## Requirements
 * GitHub Actions
-* Terraform v0.14+
+* Terraform v1.0+
 
 ## Usage of this template
-### 1. Create a repository using this template
-### 2. Create a service account for Terraform
-https://console.cloud.google.com/iam-admin/serviceaccounts
+### 1. Install tools
+* [tfenv](https://github.com/tfutils/tfenv)
+* [Cloud SDK](https://cloud.google.com/sdk/docs/install)
 
-The minimum required IAM roles are followings
+### 2. Create a repository using this template
 
-* Storage Admin
+### 3. Setup Cloud SDK
+```bash
+gcloud auth application-default login
+gcloud config set project ${GCP_PROJECT_ID}
+```
 
-Finally, download the key file with json and store as `credential.json`
+### 4. Prepare for Deployment Manager
+Add `roles/iam.securityAdmin` to `[GCP_PROJECT_NUMBER]@cloudservices.gserviceaccount.com`
 
-### 3. Register secrets
-* `GOOGLE_CREDENTIALS` **(required)**
-  * Input content of Service account key file
+```bash
+gcloud projects add-iam-policy-binding ${GCP_PROJECT_ID} --member=serviceAccount:${GCP_PROJECT_NUMBER}@cloudservices.gserviceaccount.com --role=roles/iam.securityAdmin
+```
+
+c.f. https://cloud.google.com/sdk/gcloud/reference/projects/add-iam-policy-binding
+
+### 5. Run Deployment Manager
+Download [deployment-manager/setup-terraform.jinja](deployment-manager/setup-terraform.jinja) and [deployment-manager/setup-terraform.jinja.schema](deployment-manager/setup-terraform.jinja.schema)
+
+Run Deployment Manager
+
+```bash
+gcloud deployment-manager deployments create setup-terraform --template /path/to/setup-terraform.jinja --properties backendBucketName:${BACKEND_BUCKET_NAME},backendBucketLocation:${BACKEND_BUCKET_LOCATION}
+```
+
+#### Properties
+* `backendBucketName` **(Required)**
+  * Bucket name used as the backend of Terraform
+  * c.f. https://www.terraform.io/language/settings/backends/gcs
+* `backendBucketLocation` (optional)
+  * Location of backend bucket (e.g. `us`, `us-central1`)
+  * c.f. https://cloud.google.com/storage/docs/locations
+  * default: `us`
+
+### 6. Register secrets to GitHub repository
 * `SLACK_WEBHOOK` (optional)
   * Create from https://slack.com/apps/A0F7XDUAZ
 
-### 4. Edit files
-#### [.github/workflows/terraform.yml](.github/workflows/terraform.yml)
-Edit followings
-
-* `TERRAFORM_VERSION`
-
+### 6. Edit files for local apply
 #### [.terraform-version](.terraform-version)
 * Upgrade to the latest version if necessary
-* Same to `TERRAFORM_VERSION` of [.github/workflows/terraform.yml](.github/workflows/terraform.yml)
 
-#### [account.tf](account.tf)
+#### [terraform.tfvars](terraform.tfvars)
 Edit followings
 
 * `gcp_project_id`
+  * GCP project ID
 * `provider_region`
-* `backend_bucket_location`
+  * Provider region
+  * see. https://cloud.google.com/compute/docs/regions-zones
+* `terraform_service_account_id`
+  * Account ID for the service account used by GitHub Actions
+  * This is usually `terraform` when service account is created with [deployment-manager/setup-terraform.jinja](deployment-manager/setup-terraform.jinja)
+* `github_username`
+  * GitHub user name (e.g. `sue445`)
+* `github_repository`
+  * GitHub repository name (e.g. `my-terraform-repo`)
 
 #### [backend.tf](backend.tf)
 Edit followings
 
 * `terraform.backend.bucket`
-  * Same to `backend_bucket_name` of [account.tf](account.tf)
+  * Same to `BACKEND_BUCKET_NAME`
 
 #### [versions.tf](versions.tf)
 Upgrade to the latest version if necessary
@@ -59,39 +91,33 @@ Upgrade to the latest version if necessary
 * `terraform.required_providers.google-beta.version`
 * `terraform.required_version`
 
-### 5. Create GCS bucket for Terraform backend
-https://console.cloud.google.com/storage/browser
-
-* Same to `backend_bucket_name` and `backend_bucket_location` of [account.tf](account.tf)
-
-### 6. Install tools
-* [direnv](https://github.com/direnv/direnv)
-* [tfenv](https://github.com/tfutils/tfenv)
-
 ### 7. Run Terraform from local
 ```bash
-cp .envrc.example .envrc
-vi .envrc
-
-direnv allow
 tfenv install
 
 terraform init -upgrade
 git add .terraform.lock.hcl
 git commit -m "terraform init -upgrade"
 
-terraform import google_storage_bucket.backend __BACKEND_BUCKET_NAME__
-
-terraform plan -lock=false
-terraform apply -lock=false
-
 terraform plan
 terraform apply
-
-git push
 ```
 
-### 8. Check if GitHub Actions build is executed
+### 8. Edit file for GitHub Actions
+#### [.github/workflows/terraform.yml](.github/workflows/terraform.yml)
+Edit followings
+
+* `TERRAFORM_VERSION`
+  * Same to [.terraform-version](.terraform-version)
+* `WORKLOAD_IDENTITY_PROVIDER`
+  * This is created with Terraform
+  * See. https://console.cloud.google.com/iam-admin/workload-identity-pools
+* `SERVICE_ACCOUNT_EMAIL`
+  * This is created with Deployment Manager
+  * See. https://console.cloud.google.com/iam-admin/serviceaccounts
+
+### 9. Check if GitHub Actions build is executed
+`git push` and check your repository
 
 ## Maintenance for Terraform repository
 ### Upgrade Terraform core

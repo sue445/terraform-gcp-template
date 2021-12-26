@@ -2,7 +2,19 @@ name: terraform
 
 env:
   # c.f. https://github.com/hashicorp/terraform/blob/main/CHANGELOG.md
-  TERRAFORM_VERSION: 1.1.2
+  TERRAFORM_VERSION: 1.1.2 # TODO Edit here
+
+  # e.g. projects/123456789/locations/global/workloadIdentityPools/github-actions/providers/github-actions
+  WORKLOAD_IDENTITY_PROVIDER: "" # TODO: Edit here
+
+  # e.g. terraform@GCP_PROJECT_ID.iam.gserviceaccount.com
+  SERVICE_ACCOUNT_EMAIL: "" # TODO: Edit here
+
+permissions:
+  contents: read
+  id-token: write
+  issues: write
+  pull-requests: write
 
 on:
   push:
@@ -25,11 +37,15 @@ jobs:
 
     concurrency: terraform-tfstate
 
-    env:
-      GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-
     steps:
       - uses: actions/checkout@v2
+
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.SERVICE_ACCOUNT_EMAIL }}
 
       - uses: hashicorp/setup-terraform@v1
         with:
@@ -59,7 +75,6 @@ jobs:
       - name: terraform plan
         id: plan
         run: terraform plan -input=false -no-color
-        continue-on-error: true
 
       - uses: actions/github-script@0.9.0
         if: github.event_name == 'pull_request'
@@ -68,6 +83,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const ci_url = "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}";
             const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
             <details><summary>Show Plan</summary>
@@ -78,7 +94,7 @@ jobs:
 
             </details>
 
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: [\`${{ github.workflow }}\`](${ ci_url })*`;
 
             github.issues.createComment({
               issue_number: context.issue.number,
