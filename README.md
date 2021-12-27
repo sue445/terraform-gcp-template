@@ -72,7 +72,7 @@ Edit followings
   * see. https://cloud.google.com/compute/docs/regions-zones
 * `terraform_service_account_id`
   * Account ID for the service account used by GitHub Actions
-  * This is usually `terraform` when service account is created with [deployment-manager/setup-terraform.jinja](deployment-manager/setup-terraform.jinja)
+  * This is usually `terraform` when service account is created by [deployment-manager/setup-terraform.jinja](deployment-manager/setup-terraform.jinja)
 * `github_username`
   * GitHub user name (e.g. `sue445`)
 * `github_repository`
@@ -110,10 +110,10 @@ Edit followings
 * `TERRAFORM_VERSION`
   * Same to [.terraform-version](.terraform-version)
 * `WORKLOAD_IDENTITY_PROVIDER`
-  * This is created with Terraform
+  * This is created by Terraform
   * See. https://console.cloud.google.com/iam-admin/workload-identity-pools
 * `SERVICE_ACCOUNT_EMAIL`
-  * This is created with Deployment Manager
+  * This is created by Deployment Manager
   * See. https://console.cloud.google.com/iam-admin/serviceaccounts
 
 ### 9. Check if GitHub Actions build is executed
