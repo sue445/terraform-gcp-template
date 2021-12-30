@@ -74,9 +74,9 @@ Edit followings
   * Account ID for the service account used by GitHub Actions
   * This is usually `terraform` when service account is created by [deployment-manager/setup-terraform.jinja](deployment-manager/setup-terraform.jinja)
 * `github_username`
-  * GitHub user name (e.g. `sue445`)
+  * GitHub user name (e.g. `octocat`)
 * `github_repository`
-  * GitHub repository name (e.g. `my-terraform-repo`)
+  * GitHub repository name (e.g. `Hello-World`)
 
 #### [backend.tf](backend.tf)
 Edit followings

@@ -16,10 +16,10 @@ variable "terraform_service_account_id" {
 
 variable "github_username" {
   type        = string
-  description = "GitHub user name (e.g. sue445)"
+  description = "GitHub user name (e.g. octocat)"
 }
 
 variable "github_repository" {
   type        = string
-  description = "GitHub repository name (e.g. my-terraform-repo)"
+  description = "GitHub repository name (e.g. Hello-World)"
 }
