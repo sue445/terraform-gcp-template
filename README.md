@@ -58,7 +58,7 @@ gcloud deployment-manager deployments create setup-terraform --template /path/to
 * `SLACK_WEBHOOK` (optional)
   * Create from https://slack.com/apps/A0F7XDUAZ
 
-### 6. Edit files for local apply
+### 7. Edit files for local apply
 #### [.terraform-version](.terraform-version)
 * Upgrade to the latest version if necessary
 
@@ -91,7 +91,7 @@ Upgrade to the latest version if necessary
 * `terraform.required_providers.google-beta.version`
 * `terraform.required_version`
 
-### 7. Run Terraform from local
+### 8. Run Terraform from local
 ```bash
 tfenv install
 
@@ -103,7 +103,7 @@ terraform plan
 terraform apply
 ```
 
-### 8. Edit file for GitHub Actions
+### 9. Edit file for GitHub Actions
 #### [.github/workflows/terraform.yml](.github/workflows/terraform.yml)
 Edit followings
 
@@ -116,7 +116,7 @@ Edit followings
   * This is created by Deployment Manager
   * See. https://console.cloud.google.com/iam-admin/serviceaccounts
 
-### 9. Check if GitHub Actions build is executed
+### 10. Check if GitHub Actions build is executed
 `git push` and check your repository
 
 ## Maintenance for Terraform repository
