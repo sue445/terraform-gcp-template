@@ -133,3 +133,6 @@ Edit followings
     * https://github.com/hashicorp/terraform-provider-google-beta/blob/master/CHANGELOG.md
 2. Edit `terraform.required_providers.google.version` and `terraform.required_providers.google-beta.version` in [versions.tf](versions.tf)
 3. Run `terraform init -upgrade`
+
+## Other solution
+https://github.com/sue445/terraform-aws-template
