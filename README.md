@@ -135,4 +135,4 @@ Edit followings
 3. Run `terraform init -upgrade`
 
 ## Other solution
-https://github.com/sue445/terraform-aws-template
+* https://github.com/sue445/terraform-aws-template
