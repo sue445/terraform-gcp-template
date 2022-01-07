@@ -34,7 +34,8 @@ Add `roles/iam.securityAdmin` to `[GCP_PROJECT_NUMBER]@cloudservices.gserviceacc
 gcloud projects add-iam-policy-binding ${GCP_PROJECT_ID} --member=serviceAccount:${GCP_PROJECT_NUMBER}@cloudservices.gserviceaccount.com --role=roles/iam.securityAdmin
 ```
 
-c.f. https://cloud.google.com/sdk/gcloud/reference/projects/add-iam-policy-binding
+* c.f. https://cloud.google.com/sdk/gcloud/reference/projects/add-iam-policy-binding
+* NOTE: This is required for Deployment Manager to bind the IAM role to the Terraform service account.
 
 ### 5. Run Deployment Manager
 Download [deployment-manager/setup-terraform.jinja](deployment-manager/setup-terraform.jinja) and [deployment-manager/setup-terraform.jinja.schema](deployment-manager/setup-terraform.jinja.schema)
