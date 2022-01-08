@@ -18,6 +18,7 @@
 ### 1. Install tools
 * [tfenv](https://github.com/tfutils/tfenv)
 * [Cloud SDK](https://cloud.google.com/sdk/docs/install)
+  * You can also use the Cloud SDK already installed in [Cloud Shell](https://cloud.google.com/shell)
 
 ### 2. Create a repository using this template
 
