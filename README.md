@@ -29,6 +29,8 @@ gcloud config set project ${GCP_PROJECT_ID}
 ```
 
 ### 4. Prepare for Deployment Manager
+At first, enable [Cloud Deployment Manager V2 API](https://console.cloud.google.com/marketplace/product/google/deploymentmanager.googleapis.com)
+
 Add `roles/iam.securityAdmin` to `[GCP_PROJECT_NUMBER]@cloudservices.gserviceaccount.com`
 
 ```bash
