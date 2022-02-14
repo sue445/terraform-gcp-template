@@ -17,6 +17,12 @@ resources:
       consumerId: "project:{{ env['project'] }}"
       serviceName: storage.googleapis.com
 
+  - name: enable-cloudresourcemanager.googleapis.com
+    type: deploymentmanager.v2.virtual.enableService
+    properties:
+      consumerId: "project:{{ env['project'] }}"
+      serviceName: cloudresourcemanager.googleapis.com
+
   - name: terraform
     type: iam.v1.serviceAccount
     properties:
