@@ -99,6 +99,9 @@ Upgrade to the latest version if necessary
 ```bash
 tfenv install
 
+terraform init
+
+# Run followings if you upgraded providers
 terraform init -upgrade
 git add .terraform.lock.hcl
 git commit -m "terraform init -upgrade"
@@ -131,7 +134,11 @@ Edit followings
 3. Edit [.terraform-version](.terraform-version)
 4. Run `tfenv install`
 
-### Upgrade Terraform providers
+### Upgrade Terraform providers (automatically)
+1. Edit [.github/dependabot.yml](.github/dependabot.yml)
+2. Wait for Dependabot to create a PullRequests
+
+### Upgrade Terraform providers (manually)
 1. Check latest versions
     * https://github.com/hashicorp/terraform-provider-google/blob/master/CHANGELOG.md
     * https://github.com/hashicorp/terraform-provider-google-beta/blob/master/CHANGELOG.md
