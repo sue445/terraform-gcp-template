@@ -126,6 +126,22 @@ Edit followings
 ### 10. Check if GitHub Actions build is executed
 `git push` and check your repository
 
+## Troubleshooting
+### ERROR: Identity and Access Management (IAM) API has not been used in project
+API is activated within Deployment Manager, but it takes time for it to actually be activated, resulting in the following error.
+
+```
+Waiting for create [operation-1661583070797-5e73374b31d17-d7e061b5-aef21baf]...failed.
+ERROR: (gcloud.deployment-manager.deployments.create) Error in Operation [operation-1661583070797-5e73374b31d17-d7e061b5-aef21baf]: errors:
+- code: RESOURCE_ERROR
+  location: /deployments/setup-terraform/resources/terraform
+  message: '{"ResourceType":"iam.v1.serviceAccount","ResourceErrorCode":"403","ResourceErrorMessage":{"code":403,"errors":[{"domain":"usageLimits","message":"Identity
+    and Access Management (IAM) API has not been used in project 111111111111 before
+    or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/iam.googleapis.com/overview?project=111111111111
+```
+
+Please run `gcloud deployment-manager deployments update` (**NOT** `create` ) after a few minutes. (Arguments are the same as for `create`)
+
 ## Maintenance for Terraform repository
 ### Upgrade Terraform core
 1. Check latest version
