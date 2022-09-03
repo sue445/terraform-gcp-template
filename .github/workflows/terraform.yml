@@ -2,7 +2,7 @@ name: terraform
 
 env:
   # c.f. https://github.com/hashicorp/terraform/blob/main/CHANGELOG.md
-  TERRAFORM_VERSION: 1.2.6 # TODO Edit here
+  TERRAFORM_VERSION: 1.2.8 # TODO Edit here
 
   # e.g. projects/123456789/locations/global/workloadIdentityPools/github-actions/providers/github-actions
   WORKLOAD_IDENTITY_PROVIDER: "" # TODO: Edit here
