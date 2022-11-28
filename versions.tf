@@ -3,13 +3,13 @@ terraform {
     google = {
       source = "hashicorp/google"
 
-      # c.f. https://github.com/hashicorp/terraform-provider-google/blob/master/CHANGELOG.md
+      # c.f. https://github.com/hashicorp/terraform-provider-google/blob/main/CHANGELOG.md
       version = "4.43.1"
     }
     google-beta = {
       source = "hashicorp/google-beta"
 
-      # c.f. https://github.com/hashicorp/terraform-provider-google-beta/blob/master/CHANGELOG.md
+      # c.f. https://github.com/hashicorp/terraform-provider-google-beta/blob/main/CHANGELOG.md
       version = "4.43.1"
     }
   }
