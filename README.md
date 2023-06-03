@@ -114,8 +114,6 @@ terraform apply
 #### [.github/workflows/terraform.yml](.github/workflows/terraform.yml)
 Edit followings
 
-* `TERRAFORM_VERSION`
-  * Same to [.terraform-version](.terraform-version)
 * `WORKLOAD_IDENTITY_PROVIDER`
   * This is created by Terraform
   * See. https://console.cloud.google.com/iam-admin/workload-identity-pools
