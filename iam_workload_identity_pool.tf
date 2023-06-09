@@ -1,14 +1,10 @@
 # c.f. https://cloud.google.com/iam/docs/configuring-workload-identity-federation#github-actions
 
 resource "google_iam_workload_identity_pool" "github_actions" {
-  provider = google-beta
-
   workload_identity_pool_id = "github-actions"
 }
 
 resource "google_iam_workload_identity_pool_provider" "github_actions" {
-  provider = google-beta
-
   workload_identity_pool_id          = google_iam_workload_identity_pool.github_actions.workload_identity_pool_id
   workload_identity_pool_provider_id = "github-actions"
 
