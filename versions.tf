@@ -4,7 +4,7 @@ terraform {
       source = "hashicorp/google"
 
       # c.f. https://github.com/hashicorp/terraform-provider-google/blob/main/CHANGELOG.md
-      version = "5.6.0"
+      version = "5.7.0"
     }
     google-beta = {
       source = "hashicorp/google-beta"
