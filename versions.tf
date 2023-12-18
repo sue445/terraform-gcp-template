@@ -10,7 +10,7 @@ terraform {
       source = "hashicorp/google-beta"
 
       # c.f. https://github.com/hashicorp/terraform-provider-google-beta/blob/main/CHANGELOG.md
-      version = "5.8.0"
+      version = "5.9.0"
     }
   }
   required_version = ">= 1.0"
