@@ -17,3 +17,8 @@ updates:
       # day: "sunday"
       # time: "0:00"
       # timezone: Asia/Tokyo
+    groups:
+      google-providers:
+        patterns:
+          - "hashicorp/google"
+          - "hashicorp/google-beta"
