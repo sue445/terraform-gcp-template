@@ -24,7 +24,7 @@
 
 ### 3. Setup Cloud SDK
 ```bash
-gcloud auth application-default login
+gcloud auth login
 gcloud config set project ${GCP_PROJECT_ID}
 ```
 
