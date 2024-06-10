@@ -55,6 +55,7 @@ gcloud deployment-manager deployments create setup-terraform --template /path/to
 #### Properties
 * `backendBucketName` **(Required)**
   * Bucket name used as the backend of Terraform
+  * e.g. `${GCP_PROJECT_ID}-terraform`
   * c.f. https://www.terraform.io/language/settings/backends/gcs
 * `backendBucketLocation` (optional)
   * Location of backend bucket (e.g. `us`, `us-central1`)
