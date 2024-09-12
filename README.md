@@ -1,5 +1,5 @@
 # terraform-gcp-template
-[Terraform](https://www.terraform.io/) template for [GCP](https://cloud.google.com/)
+[Terraform](https://www.terraform.io/) template for [Google Cloud (GCP)](https://cloud.google.com/)
 
 ## [Workflow](.github/workflows/terraform.yml) features
 * Authenticating via [Workload Identity Federation](https://cloud.google.com/iam/docs/configuring-workload-identity-federation#github-actions)
