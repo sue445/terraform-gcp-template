@@ -31,42 +31,56 @@ gcloud auth application-default login
 gcloud config set project ${GCP_PROJECT_ID}
 ```
 
-### 4. Prepare for Deployment Manager
-At first, enable [Cloud Deployment Manager V2 API](https://console.cloud.google.com/marketplace/product/google/deploymentmanager.googleapis.com)
+### 4. Run setup-terraform.sh
+Download [scripts/setup-terraform.sh](scripts/setup-terraform.sh) and run
 
-Add `roles/iam.securityAdmin` to `[GCP_PROJECT_NUMBER]@cloudservices.gserviceaccount.com`
-
-```bash
-gcloud projects add-iam-policy-binding ${GCP_PROJECT_ID} --member=serviceAccount:${GCP_PROJECT_NUMBER}@cloudservices.gserviceaccount.com --role=roles/iam.securityAdmin
-```
-
-* c.f. https://cloud.google.com/sdk/gcloud/reference/projects/add-iam-policy-binding
-* NOTE: This is required for Deployment Manager to bind the IAM role to the Terraform service account.
-
-### 5. Run Deployment Manager
-Download [deployment-manager/setup-terraform.jinja](deployment-manager/setup-terraform.jinja) and [deployment-manager/setup-terraform.jinja.schema](deployment-manager/setup-terraform.jinja.schema)
-
-Run Deployment Manager
+e.g.
 
 ```bash
-gcloud deployment-manager deployments create setup-terraform --template /path/to/setup-terraform.jinja --properties backendBucketName:${BACKEND_BUCKET_NAME},backendBucketLocation:${BACKEND_BUCKET_LOCATION}
+# Download and add permission
+wget https://raw.githubusercontent.com/sue445/terraform-gcp-template/refs/heads/main/scripts/setup-terraform.sh
+chmod 755 setup-terraform.sh
+
+# Run as dry run mode
+./setup-terraform.sh --project my-project --github-username octocat --github-repository Hello-World --dry-run
+
+# Actually create resources
+./setup-terraform.sh --project my-project --github-username octocat --github-repository Hello-World
 ```
 
-#### Properties
-* `backendBucketName` **(Required)**
+`setup-terraform.sh` will perform following
+
+* Enable APIs
+* Create Service Account for Terraform
+* Grant minimum IAM roles to Service Account
+* Create GCS bucket for backend
+* Create Workload Identity Pool and Provider for GitHub Actions
+
+#### Parameters
+* `--project` **(Required)**
+  * Google Project ID
+* `--backend` 
   * Bucket name used as the backend of Terraform
-  * e.g. `${GCP_PROJECT_ID}-terraform`
   * c.f. https://www.terraform.io/language/settings/backends/gcs
-* `backendBucketLocation` (optional)
-  * Location of backend bucket (e.g. `us`, `us-central1`)
+  * default: `${PROJECT_ID}-terraform`
+* `--location`
+  * Location of backend bucket (e.g. us, us-central1)
   * c.f. https://cloud.google.com/storage/docs/locations
   * default: `us`
+* `--github-username` **(Required)**
+  * GitHub user name (e.g. `octocat`)
+* `--github-repository` **(Required)**
+  * GitHub repository name (e.g. `Hello-World`)
+* `--dry-run`
+  * Run as dry run mode
+* `-help`, `-h`
+  * Show usage
 
-### 6. Register secrets to GitHub repository
+### 5. Register secrets to GitHub repository
 * `SLACK_WEBHOOK` (optional)
   * Create from https://slack.com/apps/A0F7XDUAZ
 
-### 7. Edit files for local apply
+### 6. Edit files
 #### [.terraform-version](.terraform-version)
 * Upgrade to the latest version if necessary
 
@@ -78,13 +92,6 @@ Edit followings
 * `provider_region`
   * Provider region
   * see. https://cloud.google.com/compute/docs/regions-zones
-* `terraform_service_account_id`
-  * Account ID for the service account used by GitHub Actions
-  * This is usually `terraform` when service account is created by [deployment-manager/setup-terraform.jinja](deployment-manager/setup-terraform.jinja)
-* `github_username`
-  * GitHub user name (e.g. `octocat`)
-* `github_repository`
-  * GitHub repository name (e.g. `Hello-World`)
 
 #### [backend.tf](backend.tf)
 Edit followings
@@ -111,7 +118,6 @@ git add .terraform.lock.hcl
 git commit -m "terraform init -upgrade"
 
 terraform plan
-terraform apply
 ```
 
 ### 9. Edit file for GitHub Actions
@@ -119,30 +125,14 @@ terraform apply
 Edit followings
 
 * `WORKLOAD_IDENTITY_PROVIDER`
-  * This is created by Terraform
+  * This is created by [scripts/setup-terraform.sh](scripts/setup-terraform.sh)
   * See. https://console.cloud.google.com/iam-admin/workload-identity-pools
 * `SERVICE_ACCOUNT_EMAIL`
-  * This is created by Deployment Manager
+  * This is created by [scripts/setup-terraform.sh](scripts/setup-terraform.sh)
   * See. https://console.cloud.google.com/iam-admin/serviceaccounts
 
 ### 10. Check if GitHub Actions build is executed
 `git push` and check your repository
-
-## Troubleshooting
-### ERROR: Identity and Access Management (IAM) API has not been used in project
-API is activated within Deployment Manager, but it takes time for it to actually be activated, resulting in the following error.
-
-```
-Waiting for create [operation-1661583070797-5e73374b31d17-d7e061b5-aef21baf]...failed.
-ERROR: (gcloud.deployment-manager.deployments.create) Error in Operation [operation-1661583070797-5e73374b31d17-d7e061b5-aef21baf]: errors:
-- code: RESOURCE_ERROR
-  location: /deployments/setup-terraform/resources/terraform
-  message: '{"ResourceType":"iam.v1.serviceAccount","ResourceErrorCode":"403","ResourceErrorMessage":{"code":403,"errors":[{"domain":"usageLimits","message":"Identity
-    and Access Management (IAM) API has not been used in project 111111111111 before
-    or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/iam.googleapis.com/overview?project=111111111111
-```
-
-Please run `gcloud deployment-manager deployments update` (**NOT** `create` ) after a few minutes. (Arguments are the same as for `create`)
 
 ## Maintenance for Terraform repository
 ### Upgrade Terraform core
@@ -157,8 +147,8 @@ Please run `gcloud deployment-manager deployments update` (**NOT** `create` ) af
 
 ### Upgrade Terraform providers (manually)
 1. Check latest versions
-    * https://github.com/hashicorp/terraform-provider-google/blob/master/CHANGELOG.md
-    * https://github.com/hashicorp/terraform-provider-google-beta/blob/master/CHANGELOG.md
+    * https://github.com/hashicorp/terraform-provider-google/blob/main/CHANGELOG.md
+    * https://github.com/hashicorp/terraform-provider-google-beta/blob/main/CHANGELOG.md
 2. Edit `terraform.required_providers.google.version` and `terraform.required_providers.google-beta.version` in [versions.tf](versions.tf)
 3. Run `terraform init -upgrade`
 
