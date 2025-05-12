@@ -10,7 +10,7 @@ GITHUB_REPOSITORY=""
 
 usage() {
   echo "Usage: $0 --project <gcp-project-id> --github-username <github-username> --github-repository <github-repository> [--backend <bucket-name>] [--location <gcs-location>] [--dry-run]"
-  echo "Example: $0 --project my-project --github-username octocat --github-repository Hello-World --backend my-project-terraform --location asia-northeast1 --dry-run"
+  echo "Example: $0 --project your-gcp-project-id --github-username octocat --github-repository your-gcp-project-terraform --backend your-gcp-project-terraform --location asia-northeast1 --dry-run"
   exit 1
 }
 

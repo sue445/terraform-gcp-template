@@ -27,8 +27,6 @@
 gcloud auth login
 # or
 gcloud auth application-default login
-
-gcloud config set project ${GCP_PROJECT_ID}
 ```
 
 ### 4. Run setup-terraform.sh
@@ -42,10 +40,10 @@ wget https://raw.githubusercontent.com/sue445/terraform-gcp-template/refs/heads/
 chmod 755 setup-terraform.sh
 
 # Run as dry run mode
-./setup-terraform.sh --project my-project --github-username octocat --github-repository Hello-World --dry-run
+./setup-terraform.sh --project your-gcp-project-id --github-username octocat --github-repository your-gcp-project-terraform --dry-run
 
 # Actually create resources
-./setup-terraform.sh --project my-project --github-username octocat --github-repository Hello-World
+./setup-terraform.sh --project your-gcp-project-id --github-username octocat --github-repository your-gcp-project-terraform
 ```
 
 `setup-terraform.sh` will perform following
@@ -64,13 +62,13 @@ chmod 755 setup-terraform.sh
   * c.f. https://www.terraform.io/language/settings/backends/gcs
   * default: `${PROJECT_ID}-terraform`
 * `--location`
-  * Location of backend bucket (e.g. us, us-central1)
+  * Location of backend bucket (e.g. `us`, `us-central1`)
   * c.f. https://cloud.google.com/storage/docs/locations
   * default: `us`
 * `--github-username` **(Required)**
   * GitHub user name (e.g. `octocat`)
 * `--github-repository` **(Required)**
-  * GitHub repository name (e.g. `Hello-World`)
+  * GitHub repository name (e.g. `your-gcp-project-terraform`)
 * `--dry-run`
   * Run as dry run mode
 * `-help`, `-h`
@@ -97,7 +95,7 @@ Edit followings
 Edit followings
 
 * `terraform.backend.bucket`
-  * Same to `BACKEND_BUCKET_NAME`
+  * Same to `--backend`
 
 #### [versions.tf](versions.tf)
 Upgrade to the latest version if necessary
