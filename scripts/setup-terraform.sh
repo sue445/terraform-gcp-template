@@ -105,7 +105,7 @@ run gcloud services enable --project="$PROJECT_ID" \
 
 # Create Service Account
 if ! gcloud iam service-accounts describe "$SERVICE_ACCOUNT_EMAIL" --project="$PROJECT_ID" &>/dev/null; then
-  run gcloud iam service-accounts create "$SERVICE_ACCOUNT_NAME" --project="$PROJECT_ID"
+  run gcloud iam service-accounts create "$SERVICE_ACCOUNT_NAME" --display-name="$SERVICE_ACCOUNT_NAME" --project="$PROJECT_ID"
 
   if ! $DRY_RUN; then
     echo "[INFO] Created service account: $SERVICE_ACCOUNT_EMAIL"
