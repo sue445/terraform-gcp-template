@@ -75,7 +75,7 @@ jobs:
           exit $ret
 
       - name: tflint
-        uses: reviewdog/action-tflint@master
+        uses: reviewdog/action-tflint@v1.25.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -158,7 +158,7 @@ jobs:
         if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
 
       - name: Slack Notification
-        uses: act10ns/slack@v2
+        uses: act10ns/slack@v2.1.0
         if: always()
         continue-on-error: true
         with:
