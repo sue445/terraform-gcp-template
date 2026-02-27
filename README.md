@@ -150,5 +150,12 @@ Edit followings
 2. Edit `terraform.required_providers.google.version` and `terraform.required_providers.google-beta.version` in [versions.tf](versions.tf)
 3. Run `terraform init -upgrade`
 
+### Upgrade tflint plugins (automatically)
+To automatically upgrade tflint plugins, [renovate](https://docs.renovatebot.com/) is required.
+
+Please set up renovate using the following as a reference.
+
+https://docs.renovatebot.com/getting-started/running/
+
 ## Other solution
 * https://github.com/sue445/terraform-aws-template
