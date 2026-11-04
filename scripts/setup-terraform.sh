@@ -138,7 +138,7 @@ done
 
 # Create GCS bucket for backend
 if ! gsutil ls -b "gs://${BACKEND_BUCKET_NAME}" &>/dev/null; then
-  run gcloud storage buckets create "gs://$BACKEND_BUCKET_NAME"  --project="$PROJECT_ID" --location="$BUCKET_LOCATION"
+  run gcloud storage buckets create "gs://$BACKEND_BUCKET_NAME"  --project="$PROJECT_ID" --location="$BUCKET_LOCATION" --uniform-bucket-level-access --public-access-prevention
 
   if ! $DRY_RUN; then
     echo "[INFO] Created bucket: gs://${BACKEND_BUCKET_NAME} in $BUCKET_LOCATION"
