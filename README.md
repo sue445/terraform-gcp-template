@@ -105,8 +105,18 @@ Upgrade to the latest version if necessary
 * `terraform.required_version`
 
 ### 8. Run Terraform from local
+First, run the following command to grant your user account permission to impersonate the Terraform service account when running [scripts/tf-login.sh](scripts/tf-login.sh):
+
+Replace `PROJECT_ID` with your Google Cloud project ID and `YOUR_EMAIL` with your email address.
+
+```bash
+gcloud iam service-accounts add-iam-policy-binding terraform@PROJECT_ID.iam.gserviceaccount.com --project=PROJECT_ID --role=roles/iam.serviceAccountTokenCreator --member="user:YOUR_EMAIL"
+```
+
 ```bash
 tfenv install
+
+./scripts/tf-login.sh
 
 terraform init
 
